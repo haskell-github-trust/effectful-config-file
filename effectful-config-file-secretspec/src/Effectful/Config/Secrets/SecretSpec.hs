@@ -1,0 +1,32 @@
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE GADTs #-}
+{-# LANGUAGE TypeOperators #-}
+
+module Effectful.Config.Secrets.SecretSpec (
+  runSecretSpec,
+) where
+
+import qualified Data.Map.Strict as Map
+import Effectful (Eff, IOE, liftIO, type (:>))
+import Effectful.Config.Secrets (Secrets (..), SecretsError (..))
+import Effectful.Dispatch.Dynamic (interpret)
+import Effectful.Error.Static (Error, throwError)
+import Effectful.Exception (bracket)
+import SecretSpec (Builder, builder, close, get, load, resolvedSecrets)
+
+runSecretSpec
+  :: IOE :> es
+  => Error SecretsError :> es
+  => (Builder -> Builder)
+  -> Eff (Secrets : es) a
+  -> Eff es a
+runSecretSpec f act =
+  bracket (liftIO (load (f builder))) (liftIO . close) $ \r ->
+    interpret $ \case
+      GetSecret k ->
+        maybe
+        (throwError (SecretNotFound k))
+        pure
+        (Map.lookup k (resolvedSecrets r) >>= get)
+      act

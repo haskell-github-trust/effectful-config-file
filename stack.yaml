@@ -1,0 +1,26 @@
+---
+resolver: lts-24.59
+
+packages:
+  - effectful-config-file
+  - effectful-config-file-secretspec
+
+extra-deps:
+  - secretspec-0.19.1@sha256:8a69009bc944937d81fcd94d85aafa9e9d418e76c1ce60b5965eba97059077b5,3399
+  - toml-parser-2.0.1.2@sha256:4cbcebdcbd920e9f145ca1cf572a194883f0f8844507abae7e6ba42ea037d05c,4036
+  - hs-opentelemetry-api-1.0.0.0@sha256:9faf9d6abf556b7dbe393353eaca1088039593902dd05b859e3505ade80afd77,5993
+  - hs-opentelemetry-sdk-1.0.0.0@sha256:461ed9f6e0c728e852162b08090ca251b6340fd87ec84994f596b32203dc9d83,6169
+  - hs-opentelemetry-exporter-in-memory-1.0.0.0@sha256:8f75b4e8484ba5d39f8a191ffe79ca7933305c9f7100ef91ac7fe091e2c252f7,1846
+  - hs-opentelemetry-instrumentation-monad-logger-1.0.0.0@sha256:a2cf162b985ad10645d0ee1ef3fb5d353dc21a6513aac97bba0f90b602743bc2,1789
+  - hs-opentelemetry-api-types-1.0.0.0@sha256:28e1b64c5f20bf3e6ead77c3b40aadf9a5b0e07d197eeb462b987d391dd1f513,1211
+  - hs-opentelemetry-semantic-conventions-1.40.0.0@sha256:7bb8cdd2d9facde4613c1b271b1a57ac218ed471b05943f6fcbf38b509913d24,2511
+  - thread-utils-context-0.4.1.1@sha256:171dd454081641b594042d412874f3ebcd6d0345447a7a6581924aeafaf8c2fb,2274
+  - thread-utils-finalizers-0.1.1.0@sha256:24944b71d9f1d01695a5908b4a3b44838fab870883114a323336d537995e0a5b,1381
+  - hs-opentelemetry-exporter-handle-1.0.0.0@sha256:93f36c289d7aaa60795a32b30661da7daf257155922d811e9f1f77218dce5b26,1762
+  - hs-opentelemetry-exporter-otlp-1.0.0.0@sha256:5dad7c5bce3d83fcd560fdb2749aebcfab6b535bbee7f54f82ccdc390da3268b,2456
+  - hs-opentelemetry-propagator-b3-1.0.0.0@sha256:9bd5d015f1e07472cf01efb1f130eb1805e75828f9f72b5ed730dde9fd1f3ca4,1697
+  - hs-opentelemetry-propagator-datadog-1.0.0.0@sha256:93c92b64a11cea551bf9fdf899cf30cbb4f3bb712e3dc0409517c2380dc2be65,3171
+  - hs-opentelemetry-propagator-jaeger-1.0.0.0@sha256:c3036258df0a56445e914f1f491daaea64ad3797a3879260058c5bbcdca78109,2241
+  - hs-opentelemetry-propagator-w3c-1.0.0.0@sha256:666cd59079141ea6d43fd7329f364ae6b5c38897487551c91d4d98891e79cccf,1988
+  - hs-opentelemetry-propagator-xray-1.0.0.0@sha256:70c9fcbe6255f22da749b0b70c69f186a0eab596f47e499c33a386ac5a82aac2,2286
+  - hs-opentelemetry-otlp-1.0.0.0@sha256:0ea827edde0a66b5c80c0d01a62665d58dbc2efde23412ed5e2bb9fb78571e64,3138
