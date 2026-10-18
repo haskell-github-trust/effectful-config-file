@@ -5,12 +5,18 @@
 
 packages:
 - completed:
-    hackage: secretspec-0.21.1@sha256:82da79c8fad76c411121a4eeb219bd7d1c691744a6a2b8fa6ba74bbe921b3d31,3379
+    commit: 5a8927d2b800c604fee72970ffbd137c57820fd5
+    git: https://github.com/cachix/secretspec
+    name: secretspec
     pantry-tree:
-      sha256: 764eb5f599494a9b0406efb817a998b5db9bb767a159cdb0dc693343ac9212b7
-      size: 400
+      sha256: be0fa11eac92127749bdec004432a0f303a6f73866a6475e333e151eb3733eeb
+      size: 498
+    subdir: secretspec-hs
+    version: 0.21.1
   original:
-    hackage: secretspec-0.21.1@sha256:82da79c8fad76c411121a4eeb219bd7d1c691744a6a2b8fa6ba74bbe921b3d31,3379
+    commit: 5a8927d2b800c604fee72970ffbd137c57820fd5
+    git: https://github.com/cachix/secretspec
+    subdir: secretspec-hs
 - completed:
     hackage: toml-parser-2.0.1.2@sha256:4cbcebdcbd920e9f145ca1cf572a194883f0f8844507abae7e6ba42ea037d05c,4036
     pantry-tree:
