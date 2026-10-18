@@ -29,12 +29,14 @@ import Effectful.Dispatch.Static (
  )
 import GHC.Stack (CallStack, HasCallStack, SrcLoc (..), callStack, getCallStack)
 
+-- | @since 0.1.0.0
 data Log :: Effect
 
 type instance DispatchOf Log = Static WithSideEffects
 
 newtype instance StaticRep Log = Log (Loc -> LogSource -> LogLevel -> LogStr -> IO ())
 
+-- | @since 0.1.0.0
 runLog
   :: IOE :> es
   => (Loc -> LogSource -> LogLevel -> LogStr -> IO ())
@@ -52,6 +54,7 @@ logAt lvl msg = do
   Log cb <- getStaticRep
   unsafeEff_ $ cb (callSiteLoc callStack) "" lvl (toLogStr msg)
 
+-- | @since 0.1.0.0
 logDebug
   , logWarn
     :: HasCallStack
@@ -59,6 +62,7 @@ logDebug
     => Text
     -> Eff es ()
 logDebug = logAt LevelDebug
+-- | @since 0.1.0.0
 logWarn = logAt LevelWarn
 
 callSiteLoc :: CallStack -> Loc

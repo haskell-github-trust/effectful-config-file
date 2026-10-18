@@ -1,3 +1,14 @@
+## 1.0.0 (2026-10-18)
+
+### Features
+
+* initial commit ([7ec8407](https://github.com/haskell-github-trust/effectful-config-file/commit/7ec84076e80a808240ae7ffb1f46aef081cc06ef))
+
+### Bug Fixes
+
+* fix ci ([af6d530](https://github.com/haskell-github-trust/effectful-config-file/commit/af6d530bc98f6b6d9fa2684c8cb50e726d706522))
+* use latest libsecretspec ([8bb175e](https://github.com/haskell-github-trust/effectful-config-file/commit/8bb175ede3b84ddeaf81e2681404f8d07ca23102))
+
 # Changelog
 
 ## 0.1.0.0

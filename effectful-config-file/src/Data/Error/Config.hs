@@ -5,6 +5,7 @@ module Data.Error.Config (
 import Data.List (intercalate)
 import Toml (DecodeError, prettyDecodeError)
 
+-- | @since 0.1.0.0
 newtype ConfigError = ConfigError
   { _ce_errors :: [DecodeError]
   }

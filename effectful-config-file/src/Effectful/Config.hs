@@ -38,14 +38,17 @@ import Text.Printf (printf)
 import Toml (Result (..), decode', prettyDecodeError)
 import Toml.Schema.FromValue (FromValue)
 
+-- | @since 0.1.0.0
 type Config c = Reader (MVar c)
 
+-- | @since 0.1.0.0
 getConfig
   :: IOE :> es
   => Config c :> es
   => Eff es c
 getConfig = ask >>= liftIO . readMVar
 
+-- | @since 0.1.0.0
 getConfigValue
   :: IOE :> es
   => Config c :> es
@@ -69,6 +72,7 @@ getConfigValue lens = do
               , "this should be impossible and is most likely a bug in your ConfigFetch instance"
               ]
 
+-- | @since 0.1.0.0
 readConfig
   :: FromValue c
   => Text
@@ -79,6 +83,7 @@ readConfig =
   resultToEither (Failure es) = Left (ConfigError es)
   resultToEither (Success _ c) = Right c
 
+-- | @since 0.1.0.0
 readConfig'
   :: forall c es
    . IOE :> es

@@ -80,6 +80,8 @@ class ConfigFetch a where
     -> Eff es a
 
 -- | Base configuration value.
+--
+-- @since 0.1.0.0
 data ConfigValue a
   = -- | Literal string-readable value.
     Literal a
@@ -169,6 +171,7 @@ instance ConfigParse a => ConfigFetch (ConfigValue a) where
       Literal . parse <$> getSecret k
   fetch v@(Literal _) = pure v
 
+-- | @since 0.1.0.0
 withSection
   :: Text
   -> ParseTable l a

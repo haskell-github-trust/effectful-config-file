@@ -16,6 +16,7 @@ import Effectful.Error.Static (Error, throwError)
 import Effectful.Exception (bracket)
 import SecretSpec (Builder, builder, close, get, load, resolvedSecrets)
 
+-- | @since 0.1.0.0
 runSecretSpec
   :: IOE :> es
   => Error SecretsError :> es
