@@ -1,0 +1,31 @@
+name: Build
+
+on:
+  push:
+  workflow_call:
+
+jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      stack-yamls: ${{ steps.matrix.outputs.stack-yamls }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - id: matrix
+        uses: freckle/stack-action/generate-matrix@v5
+
+  build:
+    needs: generate-matrix
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        stack-yaml: ${{ fromJSON(needs.generate-matrix.outputs.stack-yamls) }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: freckle/stack-action@v5
+        env:
+          STACK_YAML: ${{ matrix.stack-yaml }}

@@ -1,0 +1,97 @@
+{
+  "branches": [
+    "main"
+  ],
+  "tagFormat": "${version}",
+  "plugins": [
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "preset": "conventionalcommits",
+        "releaseRules": [
+          {
+            "type": "docs",
+            "release": "patch"
+          },
+          {
+            "type": "fix",
+            "release": "patch"
+          },
+          {
+            "type": "perf",
+            "release": "patch"
+          },
+          {
+            "revert": true,
+            "release": "patch"
+          }
+        ]
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "conventionalcommits",
+        "presetConfig": {}
+      }
+    ],
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "effectful-config-file/CHANGELOG.md"
+      }
+    ],
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "effectful-config-file-secretspec/CHANGELOG.md"
+      }
+    ],
+    [
+      "semantic-release-haddock-since",
+      {
+        "versionFiles": [
+          "effectful-config-file/package.yaml",
+          "effectful-config-file/*.cabal"
+        ],
+        "baseline": "effectful-config-file/api/effectful-config-file.api",
+        "srcDir": "effectful-config-file/src",
+        "haddockCommand": ["stack", "haddock", "--no-haddock-deps", "effectful-config-file"],
+        "buildCommand": ["stack", "build", "effectful-config-file"],
+        "haddockOutputDir": "effectful-config-file/.stack-work"
+      }
+    ],
+    [
+      "semantic-release-haddock-since",
+      {
+        "versionFiles": [
+          "effectful-config-file-secretspec/package.yaml",
+          "effectful-config-file-secretspec/*.cabal"
+        ],
+        "baseline": "effectful-config-file-secretspec/api/effectful-config-file-secretspec.api",
+        "srcDir": "effectful-config-file-secretspec/src",
+        "haddockCommand": ["stack", "haddock", "--no-haddock-deps", "effectful-config-file-secretspec"],
+        "buildCommand": ["stack", "build", "effectful-config-file-secretspec"],
+        "haddockOutputDir": "effectful-config-file-secretspec/.stack-work"
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "effectful-config-file/package.yaml",
+          "effectful-config-file/*.cabal",
+          "effectful-config-file/src/**/*.hs",
+          "effectful-config-file/api/*.api",
+          "effectful-config-file/CHANGELOG.md",
+          "effectful-config-file-secretspec/package.yaml",
+          "effectful-config-file-secretspec/*.cabal",
+          "effectful-config-file-secretspec/src/**/*.hs",
+          "effectful-config-file-secretspec/api/*.api",
+          "effectful-config-file-secretspec/CHANGELOG.md"
+        ]
+      }
+    ],
+    "@semantic-release/github"
+  ]
+}

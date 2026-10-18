@@ -1,0 +1,52 @@
+name: Release preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  preview:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+
+      - run: npm ci
+
+      - id: preview
+        run: |
+          GITHUB_EVENT_NAME=push GITHUB_REF="refs/heads/$BRANCH" \
+            node --input-type=module -e '
+              import { readFileSync, writeFileSync } from "node:fs";
+              import semanticRelease from "semantic-release";
+              // haddock-since verifyConditions needs stack on PATH; not worth a GHC install for a preview
+              const { plugins } = JSON.parse(readFileSync(".releaserc.json", "utf8"));
+              const res = await semanticRelease({
+                dryRun: true,
+                branches: [process.env.BRANCH],
+                plugins: plugins.filter((p) => !(Array.isArray(p) ? p[0] : p).includes("haddock-since")),
+              });
+              writeFileSync("comment.md", res?.nextRelease
+                ? `## Release preview\n\nNext version: \`${res.nextRelease.version}\`\n\n${res.nextRelease.notes}`
+                : "## Release preview\n\nNo release would be published from this branch.\n");
+            '
+        env:
+          BRANCH: ${{ github.head_ref }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: gh pr comment "$NUMBER" --body-file comment.md --edit-last --create-if-none
+        env:
+          NUMBER: ${{ github.event.pull_request.number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
