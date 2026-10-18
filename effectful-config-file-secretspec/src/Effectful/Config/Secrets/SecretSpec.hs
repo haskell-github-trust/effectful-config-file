@@ -1,6 +1,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE TypeOperators #-}
 
 module Effectful.Config.Secrets.SecretSpec (
@@ -23,10 +24,12 @@ runSecretSpec
   -> Eff es a
 runSecretSpec f act =
   bracket (liftIO (load (f builder))) (liftIO . close) $ \r ->
-    interpret $ \case
-      GetSecret k ->
-        maybe
-        (throwError (SecretNotFound k))
-        pure
-        (Map.lookup k (resolvedSecrets r) >>= get)
+    interpret
+      ( \_ -> \case
+          GetSecret k ->
+            maybe
+              (throwError (SecretNotFound k))
+              pure
+              (Map.lookup k (resolvedSecrets r) >>= get)
+      )
       act

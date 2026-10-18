@@ -70,8 +70,8 @@
         ],
         "baseline": "effectful-config-file-secretspec/api/effectful-config-file-secretspec.api",
         "srcDir": "effectful-config-file-secretspec/src",
-        "haddockCommand": ["stack", "haddock", "--no-haddock-deps", "--flag", "secretspec:use-pkg-config", "effectful-config-file-secretspec"],
-        "buildCommand": ["stack", "build", "--flag", "secretspec:use-pkg-config", "effectful-config-file-secretspec"],
+        "haddockCommand": ["stack", "haddock", "--no-haddock-deps", "effectful-config-file-secretspec"],
+        "buildCommand": ["stack", "build", "effectful-config-file-secretspec"],
         "haddockOutputDir": "effectful-config-file-secretspec/.stack-work"
       }
     ],

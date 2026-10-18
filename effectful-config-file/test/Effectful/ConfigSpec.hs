@@ -21,7 +21,10 @@ import Effectful.Config.Log (runLog)
 import Effectful.Config.Secrets (SecretsError, runSecretsError)
 import Effectful.Error.Static (runErrorNoCallStack)
 import Effectful.Reader.Static (runReader)
-import OpenTelemetry.Exporter.InMemory.LogRecord (getExportedLogRecords, inMemoryLogRecordExporter)
+import OpenTelemetry.Exporter.InMemory.LogRecord (
+  getExportedLogRecords,
+  inMemoryLogRecordExporter,
+ )
 import OpenTelemetry.Instrumentation.MonadLogger (makeOTelLogCallback)
 import OpenTelemetry.Internal.Common.Types (AnyValue (TextValue))
 import OpenTelemetry.Internal.Log.Types (logRecordBody)
@@ -187,13 +190,13 @@ spec = do
     it "restores the MVar when fetch throws" $ do
       p <- newMVar (FileConfig (File "/nonexistent"))
       result <-
-        try @IOException $
-          runEff
+        try @IOException
+          $ runEff
             . runErrorNoCallStack @SecretsError
             . runSecretsError
             . runLog silentLog
             . runReader p
-            $ getConfigValue file_val
+          $ getConfigValue file_val
 
       case result of
         Left _ -> pure ()

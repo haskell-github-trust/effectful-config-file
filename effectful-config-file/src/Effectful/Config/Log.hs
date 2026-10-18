@@ -11,7 +11,13 @@ module Effectful.Config.Log (
   logWarn,
 ) where
 
-import Control.Monad.Logger (Loc (..), LogLevel (..), LogSource, LogStr, ToLogStr (toLogStr))
+import Control.Monad.Logger (
+  Loc (..),
+  LogLevel (..),
+  LogSource,
+  LogStr,
+  ToLogStr (toLogStr),
+ )
 import Data.Text (Text)
 import Effectful (Dispatch (Static), DispatchOf, Eff, Effect, IOE, type (:>))
 import Effectful.Dispatch.Static (
@@ -26,6 +32,7 @@ import GHC.Stack (CallStack, HasCallStack, SrcLoc (..), callStack, getCallStack)
 data Log :: Effect
 
 type instance DispatchOf Log = Static WithSideEffects
+
 newtype instance StaticRep Log = Log (Loc -> LogSource -> LogLevel -> LogStr -> IO ())
 
 runLog
@@ -45,11 +52,12 @@ logAt lvl msg = do
   Log cb <- getStaticRep
   unsafeEff_ $ cb (callSiteLoc callStack) "" lvl (toLogStr msg)
 
-logDebug, logWarn
-  :: HasCallStack
-  => Log :> es
-  => Text
-  -> Eff es ()
+logDebug
+  , logWarn
+    :: HasCallStack
+    => Log :> es
+    => Text
+    -> Eff es ()
 logDebug = logAt LevelDebug
 logWarn = logAt LevelWarn
 

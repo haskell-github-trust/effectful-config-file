@@ -37,13 +37,6 @@ ghc-options:
 
 library:
   source-dirs: src
-  extra-libraries:
-    - gcc_s
-    - util
-    - rt
-    - pthread
-    - m
-    - dl
 
 tests:
   effectful-config-file-secretspec-test:

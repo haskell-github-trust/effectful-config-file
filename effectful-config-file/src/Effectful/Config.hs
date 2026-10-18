@@ -17,6 +17,7 @@ import Control.Concurrent.MVar (MVar, modifyMVar, readMVar)
 import Control.Lens (ALens', cloneLens, (&), (.~), (^.))
 import Data.Config (ConfigFetch (fetch), ConfigParse, ConfigValue (..))
 import Data.Error.Config (ConfigError (..))
+import Data.Text (Text)
 import qualified Data.Text as T (pack)
 import qualified Data.Text.IO as T (readFile)
 import Effectful (Eff, IOE, liftIO, withSeqEffToIO, type (:>))
@@ -36,7 +37,6 @@ import OpenTelemetry.Trace.Core (
 import Text.Printf (printf)
 import Toml (Result (..), decode', prettyDecodeError)
 import Toml.Schema.FromValue (FromValue)
-import Data.Text (Text)
 
 type Config c = Reader (MVar c)
 

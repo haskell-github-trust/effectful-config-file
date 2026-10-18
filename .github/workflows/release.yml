@@ -27,7 +27,7 @@ jobs:
       - uses: freckle/stack-action@v5
         with:
           test: false
-          stack-build-arguments: --fast --pedantic --flag secretspec:use-pkg-config
+          stack-build-arguments: --fast --pedantic
 
       - uses: actions/setup-node@v4
         with:

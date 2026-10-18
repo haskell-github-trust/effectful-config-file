@@ -5,6 +5,15 @@ on:
   workflow_call:
 
 jobs:
+  fourmolu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: haskell-actions/run-fourmolu@v13
+        with:
+          version: "0.21.0.0"
+
   generate-matrix:
     runs-on: ubuntu-latest
     outputs:
@@ -30,6 +39,6 @@ jobs:
 
       - uses: freckle/stack-action@v5
         with:
-          stack-build-arguments: --fast --pedantic --flag secretspec:use-pkg-config
+          stack-build-arguments: --fast --pedantic
         env:
           STACK_YAML: ${{ matrix.stack-yaml }}
