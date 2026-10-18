@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-15] # actions/runner-images#14940: revert to macos-latest once fixed
         stack-yaml: ${{ fromJSON(needs.generate-matrix.outputs.stack-yamls) }}
     steps:
       - uses: actions/checkout@v6
