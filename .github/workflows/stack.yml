@@ -26,6 +26,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - uses: ./.github/actions/libsecretspec
+
       - uses: freckle/stack-action@v5
+        with:
+          stack-build-arguments: --fast --pedantic --flag secretspec:use-pkg-config
         env:
           STACK_YAML: ${{ matrix.stack-yaml }}

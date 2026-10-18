@@ -1,0 +1,39 @@
+name: libsecretspec
+description: Install the libsecretspec static library and expose it via PKG_CONFIG_PATH
+inputs:
+  version:
+    description: cachix/secretspec tag, must match the secretspec extra-dep in stack.yaml
+    default: v0.21.1
+runs:
+  using: composite
+  steps:
+    - id: cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.libsecretspec
+        key: libsecretspec-${{ inputs.version }}-${{ runner.os }}-${{ runner.arch }}
+
+    - if: steps.cache.outputs.cache-hit != 'true'
+      uses: taiki-e/install-action@v2
+      with:
+        tool: cargo-c
+
+    # rustup picks up the toolchain pinned by the repo's rust-toolchain.toml
+    - if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      env:
+        VERSION: ${{ inputs.version }}
+      run: |
+        src="$RUNNER_TEMP/secretspec"
+        git clone --depth 1 --branch "$VERSION" https://github.com/cachix/secretspec.git "$src"
+        cd "$src"
+        # inlined from libsecretspec/scripts/cinstall.sh: it breaks on macOS bash 3.2 (empty array under set -u)
+        cargo cinstall -p libsecretspec --manifest-path Cargo.toml \
+          --library-type staticlib \
+          --prefix "$HOME/.libsecretspec" \
+          --bindir lib \
+          --libdir lib \
+          --pkgconfigdir lib/pkgconfig
+
+    - shell: bash
+      run: echo "PKG_CONFIG_PATH=$HOME/.libsecretspec/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}" >> "$GITHUB_ENV"

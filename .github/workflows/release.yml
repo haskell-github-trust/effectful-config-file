@@ -21,10 +21,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: ./.github/actions/libsecretspec
+
       # puts stack/GHC on PATH and warms .stack-work for semantic-release-haddock-since
       - uses: freckle/stack-action@v5
         with:
           test: false
+          stack-build-arguments: --fast --pedantic --flag secretspec:use-pkg-config
 
       - uses: actions/setup-node@v4
         with:

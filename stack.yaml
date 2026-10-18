@@ -6,7 +6,7 @@ packages:
   - effectful-config-file-secretspec
 
 extra-deps:
-  - secretspec-0.19.1@sha256:8a69009bc944937d81fcd94d85aafa9e9d418e76c1ce60b5965eba97059077b5,3399
+  - secretspec-0.21.1@sha256:82da79c8fad76c411121a4eeb219bd7d1c691744a6a2b8fa6ba74bbe921b3d31,3379
   - toml-parser-2.0.1.2@sha256:4cbcebdcbd920e9f145ca1cf572a194883f0f8844507abae7e6ba42ea037d05c,4036
   - hs-opentelemetry-api-1.0.0.0@sha256:9faf9d6abf556b7dbe393353eaca1088039593902dd05b859e3505ade80afd77,5993
   - hs-opentelemetry-sdk-1.0.0.0@sha256:461ed9f6e0c728e852162b08090ca251b6340fd87ec84994f596b32203dc9d83,6169
