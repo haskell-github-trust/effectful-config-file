@@ -62,6 +62,7 @@ logDebug
     => Text
     -> Eff es ()
 logDebug = logAt LevelDebug
+
 -- | @since 0.1.0.0
 logWarn = logAt LevelWarn
 

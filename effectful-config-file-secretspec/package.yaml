@@ -1,15 +1,19 @@
 ---
 name: effectful-config-file-secretspec
 version: 0.1.0.0
-license: GPL-3
+license: BSD-3-Clause
 author: drlkf
 maintainer: drlkf@drlkf.net
-copyright: 2024 drlkf
+copyright: 2026 drlkf
 
 extra-source-files:
   - README.md
+
+extra-docs-files:
   - CHANGELOG.md
 
+category: Configuration
+synopsis: SecretSpec backend for effectful-config-file
 description: >-
   SecretSpec-backed Secrets effect handler for effectful-config-file
 
@@ -18,11 +22,11 @@ build-tools:
 
 dependencies:
   - base >= 4.7 && < 5
-  - containers
-  - effectful
-  - effectful-config-file
-  - secretspec
-  - text
+  - containers >= 0.2 && < 1
+  - effectful >= 2.6 && < 3
+  - effectful-config-file >= 0.1 && < 2
+  - secretspec >= 0.21 && < 1
+  - text >= 2.1 && < 3
 
 ghc-options:
   - -Wall
@@ -46,7 +50,6 @@ tests:
       - -threaded
       - -rtsopts
       - -with-rtsopts=-N
-      - -Werror
 
     dependencies:
       - effectful-config-file-secretspec
