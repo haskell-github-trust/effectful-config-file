@@ -5,7 +5,7 @@ cabal-version: 2.2
 -- see: https://github.com/sol/hpack
 
 name:           effectful-config-file
-version:        0.1.0.0
+version:        0.1.0.1
 synopsis:       Config-file effect for effectful
 description:    Config-file parser and utilities to use in conjunction with effectful
 category:       Configuration

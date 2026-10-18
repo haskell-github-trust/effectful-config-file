@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/haskell-github-trust/effectful-config-file/compare/1.0.0...1.0.1) (2026-10-18)
+
+### Bug Fixes
+
+* fix cabal fields for hackage ([38aa83d](https://github.com/haskell-github-trust/effectful-config-file/commit/38aa83de5b58bb82431960994643de12b5bdbc8e))
+
 ## 1.0.0 (2026-10-18)
 
 ### Features
