@@ -9,7 +9,7 @@ copyright: 2026 drlkf
 extra-source-files:
   - README.md
 
-extra-docs-files:
+extra-doc-files:
   - CHANGELOG.md
 
 category: Configuration
