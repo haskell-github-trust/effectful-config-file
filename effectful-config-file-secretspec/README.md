@@ -25,3 +25,15 @@ export PKG_CONFIG_PATH="$HOME/.libsecretspec/lib/pkgconfig${PKG_CONFIG_PATH:+:$P
 ```
 
 Check it with `pkg-config --libs libsecretspec`, then build with `stack build`.
+
+## Releasing to Hackage
+
+Hackage's doc builder has no libsecretspec, so documentation must be built
+and uploaded by a maintainer, with libsecretspec installed:
+
+```bash
+scripts/hackage-upload.sh effectful-config-file-secretspec            # candidate
+scripts/hackage-upload.sh effectful-config-file-secretspec --publish  # release
+```
+
+Credentials come from `HACKAGE_KEY` or an interactive prompt.
