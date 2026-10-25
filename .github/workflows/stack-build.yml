@@ -1,8 +1,13 @@
-name: Build
+name: stack-build
 
 on:
   push:
-  workflow_call:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
   fourmolu:
@@ -13,6 +18,14 @@ jobs:
       - uses: haskell-actions/run-fourmolu@v13
         with:
           version: "0.21.0.0"
+
+  single-constraints:
+    name: Single constraint per line
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      # instance and class contexts cannot be curried
+      - run: "! grep -rnPzo '(?<!instance )(?<!class )(?<!#-} )\\([^()]*,[^()]*\\)\\s*=>' effectful-config-file*/src effectful-config-file*/test"
 
   generate-matrix:
     runs-on: ubuntu-latest
@@ -25,6 +38,7 @@ jobs:
         uses: freckle/stack-action/generate-matrix@v5
 
   build:
+    name: ${{ matrix.stack-yaml }} / ${{ matrix.os }}
     needs: generate-matrix
     runs-on: ${{ matrix.os }}
     strategy:
@@ -32,6 +46,8 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-15] # actions/runner-images#14940: revert to macos-latest once fixed
         stack-yaml: ${{ fromJSON(needs.generate-matrix.outputs.stack-yamls) }}
+    env:
+      STACK_YAML: ${{ matrix.stack-yaml }}
     steps:
       - uses: actions/checkout@v6
 
@@ -41,5 +57,10 @@ jobs:
         with:
           stack-build-arguments: --fast --pedantic
           cache-prefix: v2/
-        env:
-          STACK_YAML: ${{ matrix.stack-yaml }}
+
+      - name: Check cabal file
+        run: for p in effectful-config-file*/; do (cd "$p" && stack exec -- cabal check); done
+        continue-on-error: true
+
+      - name: Build documentation
+        run: stack haddock --no-haddock-deps
