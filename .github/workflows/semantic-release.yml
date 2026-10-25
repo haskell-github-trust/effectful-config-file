@@ -6,6 +6,10 @@ on:
     types: [completed]
     branches: [main]
 
+concurrency:
+  group: semantic-release
+  cancel-in-progress: false
+
 jobs:
   release:
     name: Semantic release
