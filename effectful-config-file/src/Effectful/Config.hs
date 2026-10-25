@@ -38,17 +38,24 @@ import Text.Printf (printf)
 import Toml (Result (..), decode', prettyDecodeError)
 import Toml.Schema.FromValue (FromValue)
 
--- | @since 0.1.0.0
+-- | Effect giving access to a shared, mutable configuration of type @c@.
+--
+-- @since 0.1.0.0
 type Config c = Reader (MVar c)
 
--- | @since 0.1.0.0
+-- | Get the current configuration.
+--
+-- @since 0.1.0.0
 getConfig
   :: IOE :> es
   => Config c :> es
   => Eff es c
 getConfig = ask >>= liftIO . readMVar
 
--- | @since 0.1.0.0
+-- | Fetch the value at the given lens from its source, caching the result
+-- as a 'Literal' in the configuration for subsequent calls.
+--
+-- @since 0.1.0.0
 getConfigValue
   :: IOE :> es
   => Config c :> es
@@ -72,7 +79,9 @@ getConfigValue lens = do
               , "this should be impossible and is most likely a bug in your ConfigFetch instance"
               ]
 
--- | @since 0.1.0.0
+-- | Decode a configuration from TOML text. Warnings are ignored.
+--
+-- @since 0.1.0.0
 readConfig
   :: FromValue c
   => Text
@@ -83,7 +92,10 @@ readConfig =
   resultToEither (Failure es) = Left (ConfigError es)
   resultToEither (Success _ c) = Right c
 
--- | @since 0.1.0.0
+-- | Read and decode a TOML configuration file, logging decoding warnings
+-- and throwing t'ConfigError' on failure.
+--
+-- @since 0.1.0.0
 readConfig'
   :: forall c es
    . IOE :> es

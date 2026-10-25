@@ -16,7 +16,11 @@ import Effectful.Error.Static (Error, throwError)
 import Effectful.Exception (bracket)
 import SecretSpec (Builder, builder, close, get, load, resolvedSecrets)
 
--- | @since 0.1.0.0
+-- | Run 'Secrets' with secretspec. The function customizes the default
+-- 'Builder'; secrets are loaded once for the whole computation and missing
+-- keys throw 'SecretNotFound'.
+--
+-- @since 0.1.0.0
 runSecretSpec
   :: IOE :> es
   => Error SecretsError :> es

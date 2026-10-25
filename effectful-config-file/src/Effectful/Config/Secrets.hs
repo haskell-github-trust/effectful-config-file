@@ -17,26 +17,37 @@ import Effectful.Dispatch.Dynamic (interpret, send)
 import Effectful.Error.Static (Error, throwError)
 import GHC.Stack (HasCallStack)
 
--- | @since 0.1.0.0
+-- | Effect to look up secrets by key.
+--
+-- @since 0.1.0.0
 data Secrets :: Effect where
+  -- | Look up the secret with the given key.
   GetSecret :: Text -> Secrets m Text
 
 type instance DispatchOf Secrets = Dynamic
 
--- | @since 0.1.0.0
+-- | Look up the secret with the given key.
+--
+-- @since 0.1.0.0
 getSecret
   :: HasCallStack
   => Secrets :> es
   => Text -> Eff es Text
 getSecret = send . GetSecret
 
--- | @since 0.1.0.0
+-- | Errors raised when a secret cannot be resolved.
+--
+-- @since 0.1.0.0
 data SecretsError
-  = NoSecretsBackend Text
-  | SecretNotFound Text
+  = -- | No secrets backend is configured to resolve the key.
+    NoSecretsBackend Text
+  | -- | The backend has no secret with this key.
+    SecretNotFound Text
   deriving (Eq, Show)
 
--- | @since 0.1.0.0
+-- | Run 'Secrets' without a backend: every lookup throws 'NoSecretsBackend'.
+--
+-- @since 0.1.0.0
 runSecretsError
   :: Error SecretsError :> es
   => Eff (Secrets : es) a

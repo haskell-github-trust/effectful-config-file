@@ -58,7 +58,11 @@ import Toml.Schema (
  )
 import Toml.Semantics.Types (Value' (..))
 
+-- | Class to convert raw text fetched from a source into a value.
+--
+-- @since 0.1.0.0
 class ConfigParse a where
+  -- | Parse raw text into a value.
   parse :: Text -> a
 
 instance ConfigParse Int where
@@ -74,7 +78,10 @@ instance ConfigParse Text where
   parse = id
 
 -- | Class to fetch values from different sources.
+--
+-- @since 0.1.0.0
 class ConfigFetch a where
+  -- | Resolve a value from its source, returning it in resolved form.
   fetch
     :: IOE :> es
     => Log :> es
@@ -177,7 +184,10 @@ instance ConfigParse a => ConfigFetch (ConfigValue a) where
       Literal . parse <$> getSecret k
   fetch v@(Literal _) = pure v
 
--- | @since 0.1.0.0
+-- | Parse the TOML table under the top-level key with the given parser.
+-- Fails if the key is missing or is not a table.
+--
+-- @since 0.1.0.0
 withSection
   :: Text
   -> ParseTable l a
