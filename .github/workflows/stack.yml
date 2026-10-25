@@ -40,5 +40,6 @@ jobs:
       - uses: freckle/stack-action@v5
         with:
           stack-build-arguments: --fast --pedantic
+          cache-prefix: v2/
         env:
           STACK_YAML: ${{ matrix.stack-yaml }}
