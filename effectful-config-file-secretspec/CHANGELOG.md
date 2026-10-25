@@ -1,3 +1,5 @@
+## [1.1.1](https://github.com/haskell-github-trust/effectful-config-file/compare/1.1.0...1.1.1) (2026-10-25)
+
 ## [1.1.0](https://github.com/haskell-github-trust/effectful-config-file/compare/1.0.2...1.1.0) (2026-10-25)
 
 ### Features
