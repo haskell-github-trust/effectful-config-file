@@ -14,6 +14,7 @@ import Control.Lens (makeLenses, (^.))
 import Data.Bifunctor (Bifunctor (..), first)
 import Data.Config (ConfigValue (..), withSection)
 import Data.Error.Config (ConfigError (..))
+import Data.Text (Text)
 import qualified Data.Text as T (isInfixOf, pack, unlines, unpack)
 import Effectful (runEff)
 import Effectful.Config (getConfigValue, readConfig, readConfig')
@@ -83,6 +84,12 @@ newtype FileConfig = FileConfig
 
 makeLenses ''FileConfig
 
+newtype TextConfig = TextConfig (ConfigValue Text)
+  deriving (Eq, Show)
+
+instance FromValue TextConfig where
+  fromValue = withSection "text" $ TextConfig <$> reqKey "v"
+
 instance Functor (Result e) where
   fmap _ (Failure e) = Failure e
   fmap f (Success e a) = Success e (f a)
@@ -113,6 +120,11 @@ spec = do
 
     it "fetch" $ do
       result `shouldBe` Right (42, "test")
+
+  describe "Text config value" $ do
+    it "parses literal and env" $ do
+      readConfig "[text]\nv = \"test\"" `shouldBe` Right (TextConfig (Literal "test"))
+      readConfig "[text]\nv = \"env://X\"" `shouldBe` Right (TextConfig (Env "X"))
 
   describe "readConfig" $ do
     let result = TestConfig (Literal 42) (Literal "test")

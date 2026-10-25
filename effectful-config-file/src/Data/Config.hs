@@ -70,6 +70,9 @@ instance ConfigParse ByteString where
 instance ConfigParse String where
   parse = T.unpack
 
+instance ConfigParse Text where
+  parse = id
+
 -- | Class to fetch values from different sources.
 class ConfigFetch a where
   fetch
@@ -121,6 +124,9 @@ parseTextValue v@(Text' _ t) =
 parseTextValue _ = fail "must be text value"
 
 instance {-# OVERLAPPING #-} FromValue (ConfigValue String) where
+  fromValue = parseTextValue
+
+instance {-# OVERLAPPING #-} FromValue (ConfigValue Text) where
   fromValue = parseTextValue
 
 instance (FromValue a, Typeable a) => FromValue (ConfigValue a) where
