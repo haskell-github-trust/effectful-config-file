@@ -8,7 +8,7 @@ runs:
   using: composite
   steps:
     - id: cache
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: ~/.libsecretspec
         key: libsecretspec-${{ inputs.version }}-${{ runner.os }}-${{ runner.arch }}
