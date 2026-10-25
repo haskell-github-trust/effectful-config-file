@@ -1,6 +1,7 @@
 Data.Config.(Toml.Schema.FromValue.FromValue a, GHC.Internal.Data.Typeable.Internal.Typeable a) => Toml.Schema.FromValue.FromValue (Data.Config.ConfigValue a)
 Data.Config.ConfigValue
 Data.Config.Data.Config.ConfigParse Data.ByteString.Internal.Type.ByteString
+Data.Config.Data.Config.ConfigParse Data.Text.Internal.Text
 Data.Config.Data.Config.ConfigParse GHC.Internal.Base.String
 Data.Config.Data.Config.ConfigParse GHC.Types.Int
 Data.Config.Data.Config.ConfigParse a => Data.Config.ConfigFetch (Data.Config.ConfigValue a)
@@ -11,6 +12,7 @@ Data.Config.GHC.Internal.Base.Functor Data.Config.ConfigValue
 Data.Config.GHC.Internal.Show.Show a => GHC.Internal.Show.Show (Data.Config.ConfigValue a)
 Data.Config.Literal
 Data.Config.Secret
+Data.Config.Toml.Schema.FromValue.FromValue (Data.Config.ConfigValue Data.Text.Internal.Text)
 Data.Config.Toml.Schema.FromValue.FromValue (Data.Config.ConfigValue GHC.Internal.Base.String)
 Data.Config.fetch
 Data.Config.parse

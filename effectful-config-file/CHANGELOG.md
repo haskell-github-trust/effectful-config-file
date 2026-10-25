@@ -1,3 +1,9 @@
+## [1.1.0](https://github.com/haskell-github-trust/effectful-config-file/compare/1.0.2...1.1.0) (2026-10-25)
+
+### Features
+
+* add `Text` base value support ([227a15e](https://github.com/haskell-github-trust/effectful-config-file/commit/227a15e25d2d7c5bb950472ac6f7aa7ce8ecaf29))
+
 ## [1.0.2](https://github.com/haskell-github-trust/effectful-config-file/compare/1.0.1...1.0.2) (2026-10-20)
 
 ## [1.0.1](https://github.com/haskell-github-trust/effectful-config-file/compare/1.0.0...1.0.1) (2026-10-18)
