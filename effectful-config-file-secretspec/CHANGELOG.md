@@ -1,3 +1,9 @@
+## [1.2.0](https://github.com/haskell-github-trust/effectful-config-file/compare/1.1.1...1.2.0) (2026-10-26)
+
+### Features
+
+* add `requireConfigValue` helper ([8ba0c9e](https://github.com/haskell-github-trust/effectful-config-file/commit/8ba0c9e9e09ac829f3e64f44ae519d81c137312b))
+
 ## [1.1.1](https://github.com/haskell-github-trust/effectful-config-file/compare/1.1.0...1.1.1) (2026-10-25)
 
 ## [1.1.0](https://github.com/haskell-github-trust/effectful-config-file/compare/1.0.2...1.1.0) (2026-10-25)

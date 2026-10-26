@@ -23,5 +23,7 @@ instance Show ConfigError where
   show (ConfigError es) = "config error: " <> intercalate "; " (map prettyDecodeError es)
 
 -- | A configuration value whose @env://@ or @file://@ source is absent.
+--
+-- @since 0.1.2.0
 newtype ConfigNotFound = ConfigNotFound Text
   deriving (Eq, Show)

@@ -18,8 +18,11 @@ Data.Config.fetch
 Data.Config.parse
 Data.Config.withSection
 Data.Error.Config.ConfigError
+Data.Error.Config.ConfigNotFound
 Data.Error.Config.GHC.Classes.Eq Data.Error.Config.ConfigError
+Data.Error.Config.GHC.Classes.Eq Data.Error.Config.ConfigNotFound
 Data.Error.Config.GHC.Internal.Show.Show Data.Error.Config.ConfigError
+Data.Error.Config.GHC.Internal.Show.Show Data.Error.Config.ConfigNotFound
 Effectful.Config.Config
 Effectful.Config.Log.Log
 Effectful.Config.Log.logDebug
@@ -37,3 +40,4 @@ Effectful.Config.getConfig
 Effectful.Config.getConfigValue
 Effectful.Config.readConfig
 Effectful.Config.readConfig'
+Effectful.Config.requireConfigValue

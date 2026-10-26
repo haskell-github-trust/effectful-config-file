@@ -85,6 +85,8 @@ getConfigValue lens = do
 
 -- | 'getConfigValue', raising t'ConfigNotFound' when an @env://@ or @file://@
 -- source is absent instead of letting the 'IOException' escape.
+--
+-- @since 0.1.2.0
 requireConfigValue
   :: IOE :> es
   => Config c :> es
