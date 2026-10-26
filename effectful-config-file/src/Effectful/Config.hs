@@ -12,12 +12,14 @@ module Effectful.Config (
   getConfigValue,
   readConfig,
   readConfig',
+  requireConfigValue,
 ) where
 
 import Control.Concurrent.MVar (MVar, modifyMVar, readMVar)
+import Control.Exception (IOException)
 import Control.Lens (ALens', cloneLens, (&), (.~), (^.))
 import Data.Config (ConfigFetch (fetch), ConfigParse, ConfigValue (..))
-import Data.Error.Config (ConfigError (..))
+import Data.Error.Config (ConfigError (..), ConfigNotFound (..))
 import Data.Text (Text)
 import qualified Data.Text as T (pack)
 import qualified Data.Text.IO as T (readFile)
@@ -25,6 +27,7 @@ import Effectful (Eff, IOE, liftIO, withSeqEffToIO, type (:>))
 import Effectful.Config.Log (Log, logWarn)
 import Effectful.Config.Secrets (Secrets)
 import Effectful.Error.Static (Error, throwError)
+import Effectful.Exception (catch)
 import Effectful.Reader.Static (Reader, ask)
 import OpenTelemetry.Trace.Core (
   addAttribute,
@@ -79,6 +82,22 @@ getConfigValue lens = do
               [ printf "tried to get raw config value from (%s)" (show v)
               , "this should be impossible and is most likely a bug in your ConfigFetch instance"
               ]
+
+-- | 'getConfigValue', raising t'ConfigNotFound' when an @env://@ or @file://@
+-- source is absent instead of letting the 'IOException' escape.
+requireConfigValue
+  :: IOE :> es
+  => Config c :> es
+  => Log :> es
+  => Secrets :> es
+  => Error ConfigNotFound :> es
+  => ConfigParse a
+  => Show a
+  => Text
+  -> ALens' c (ConfigValue a)
+  -> Eff es a
+requireConfigValue name lens =
+  getConfigValue lens `catch` \(_ :: IOException) -> throwError (ConfigNotFound name)
 
 -- | Decode a configuration from TOML text. Warnings are ignored.
 --

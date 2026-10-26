@@ -13,11 +13,11 @@ import Control.Exception (IOException, try)
 import Control.Lens (makeLenses, (^.))
 import Data.Bifunctor (Bifunctor (..), first)
 import Data.Config (ConfigValue (..), withSection)
-import Data.Error.Config (ConfigError (..))
+import Data.Error.Config (ConfigError (..), ConfigNotFound (..))
 import Data.Text (Text)
 import qualified Data.Text as T (isInfixOf, pack, unlines, unpack)
 import Effectful (runEff)
-import Effectful.Config (getConfigValue, readConfig, readConfig')
+import Effectful.Config (getConfigValue, readConfig, readConfig', requireConfigValue)
 import Effectful.Config.Log (runLog)
 import Effectful.Config.Secrets (SecretsError, runSecretsError)
 import Effectful.Error.Static (runErrorNoCallStack)
@@ -216,6 +216,20 @@ spec = do
 
       cfg <- timeout 1000000 (readMVar p)
       cfg `shouldBe` Just (FileConfig (File "/nonexistent"))
+
+  describe "requireConfigValue" $ do
+    it "throws ConfigNotFound on a missing file" $ do
+      p <- newMVar (FileConfig (File "/nonexistent"))
+      result <-
+        runEff
+          . runErrorNoCallStack @ConfigNotFound
+          . runErrorNoCallStack @SecretsError
+          . runSecretsError
+          . runLog silentLog
+          . runReader p
+          $ requireConfigValue "file_val" file_val
+
+      result `shouldBe` Left (ConfigNotFound "file_val")
 
   describe "readConfig' OTel logging" $ do
     it "emits parse warnings as OTel log records" $ withSystemTempFile "effectful-config" $ \path h -> do

@@ -1,9 +1,11 @@
 -- | Configuration decoding errors.
 module Data.Error.Config (
   ConfigError (..),
+  ConfigNotFound (..),
 ) where
 
 import Data.List (intercalate)
+import Data.Text (Text)
 import Toml (DecodeError, prettyDecodeError)
 
 -- | Errors raised while decoding a TOML configuration.
@@ -19,3 +21,7 @@ instance Eq ConfigError where
 
 instance Show ConfigError where
   show (ConfigError es) = "config error: " <> intercalate "; " (map prettyDecodeError es)
+
+-- | A configuration value whose @env://@ or @file://@ source is absent.
+newtype ConfigNotFound = ConfigNotFound Text
+  deriving (Eq, Show)
