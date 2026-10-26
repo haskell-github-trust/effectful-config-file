@@ -13,7 +13,7 @@ jobs:
   fourmolu:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - uses: haskell-actions/run-fourmolu@v13
         with:
@@ -23,7 +23,7 @@ jobs:
     name: Single constraint per line
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # instance and class contexts cannot be curried
       - run: "! grep -rnPzo '(?<!instance )(?<!class )(?<!#-} )\\([^()]*,[^()]*\\)\\s*=>' effectful-config-file*/src effectful-config-file*/test"
 
@@ -32,7 +32,7 @@ jobs:
     outputs:
       stack-yamls: ${{ steps.matrix.outputs.stack-yamls }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - id: matrix
         uses: freckle/stack-action/generate-matrix@v5
@@ -49,7 +49,7 @@ jobs:
     env:
       STACK_YAML: ${{ matrix.stack-yaml }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - uses: ./.github/actions/libsecretspec
 
