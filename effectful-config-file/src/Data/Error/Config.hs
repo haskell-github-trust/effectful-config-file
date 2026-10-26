@@ -1,3 +1,4 @@
+-- | Configuration decoding errors.
 module Data.Error.Config (
   ConfigError (..),
 ) where

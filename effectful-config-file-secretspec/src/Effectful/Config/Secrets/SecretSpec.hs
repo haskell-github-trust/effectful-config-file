@@ -4,6 +4,7 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE TypeOperators #-}
 
+-- | secretspec backend for the 'Effectful.Config.Secrets.Secrets' effect.
 module Effectful.Config.Secrets.SecretSpec (
   runSecretSpec,
 ) where

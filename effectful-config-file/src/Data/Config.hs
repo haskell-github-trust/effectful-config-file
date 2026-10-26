@@ -7,6 +7,8 @@
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeOperators #-}
 
+-- | Configuration values that can be literals or references to
+-- environment variables, files or secrets, and their TOML decoding.
 module Data.Config (
   ConfigParse (..),
   ConfigFetch (..),

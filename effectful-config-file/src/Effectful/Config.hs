@@ -5,6 +5,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeOperators #-}
 
+-- | Effect to read a TOML configuration and lazily resolve its values.
 module Effectful.Config (
   Config,
   getConfig,

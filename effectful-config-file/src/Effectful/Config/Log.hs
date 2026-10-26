@@ -4,6 +4,7 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 
+-- | Minimal logging effect used by the configuration library.
 module Effectful.Config.Log (
   Log,
   runLog,

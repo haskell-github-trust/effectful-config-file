@@ -4,6 +4,7 @@
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE TypeOperators #-}
 
+-- | Effect to resolve secrets referenced by configuration values.
 module Effectful.Config.Secrets (
   Secrets (..),
   getSecret,
