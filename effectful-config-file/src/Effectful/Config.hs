@@ -68,6 +68,7 @@ getConfigValue
   => ConfigParse a
   => Show a
   => ALens' c (ConfigValue a)
+  -- ^ getter lens
   -> Eff es a
 getConfigValue lens = do
   mvar <- ask
@@ -83,8 +84,7 @@ getConfigValue lens = do
               , "this should be impossible and is most likely a bug in your ConfigFetch instance"
               ]
 
--- | 'getConfigValue', raising t'ConfigNotFound' when an @env://@ or @file://@
--- source is absent instead of letting the 'IOException' escape.
+-- | 'getConfigValue' wrapped with 'ConfigNotFound' on missing file path
 --
 -- @since 0.1.2.0
 requireConfigValue
@@ -96,7 +96,9 @@ requireConfigValue
   => ConfigParse a
   => Show a
   => Text
+  -- ^ display name of the value
   -> ALens' c (ConfigValue a)
+  -- ^ getter lens
   -> Eff es a
 requireConfigValue name lens =
   getConfigValue lens `catch` \(_ :: IOException) -> throwError (ConfigNotFound name)
@@ -107,6 +109,7 @@ requireConfigValue name lens =
 readConfig
   :: FromValue c
   => Text
+  -- ^ contents to parse
   -> Either ConfigError c
 readConfig =
   resultToEither . decode'
@@ -125,6 +128,7 @@ readConfig'
   => Log :> es
   => FromValue c
   => FilePath
+  -- ^ path to read
   -> Eff es c
 readConfig' path = do
   tp <- getGlobalTracerProvider
