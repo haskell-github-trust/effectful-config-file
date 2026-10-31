@@ -1,3 +1,5 @@
+## [1.2.2](https://github.com/haskell-github-trust/effectful-config-file/compare/1.2.1...1.2.2) (2026-10-31)
+
 ## [1.2.1](https://github.com/haskell-github-trust/effectful-config-file/compare/1.2.0...1.2.1) (2026-10-31)
 
 ## [1.2.0](https://github.com/haskell-github-trust/effectful-config-file/compare/1.1.1...1.2.0) (2026-10-26)
