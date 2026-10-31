@@ -1,6 +1,20 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
+  "extends": ["config:recommended"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "stack extra-deps",
+      "managerFilePatterns": ["/(^|/)stack[^/]*\\.yaml$/"],
+      "matchStrings": ["- (?<depName>[a-zA-Z][a-zA-Z0-9-]*?)-(?<currentValue>\\d+(\\.\\d+)*)\\b"],
+      "datasourceTemplate": "hackage"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "v10 needs conventional-changelog-writer@9; release-notes-generator still ships writer@8",
+      "matchPackageNames": ["conventional-changelog-conventionalcommits"],
+      "allowedVersions": "<10"
+    }
   ]
 }
