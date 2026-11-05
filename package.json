@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/changelog": "^7.0.0",
+    "@semantic-release/git": "^11.0.0",
     "conventional-changelog-conventionalcommits": "^10.0.0",
-    "semantic-release": "^24.2.0",
+    "semantic-release": "^25.0.0",
     "semantic-release-haddock-since": "https://github.com/haskell-github-trust/semantic-release-haddock-since/releases/download/1.0.0/semantic-release-haddock-since-1.0.0.tgz"
   }
 }
