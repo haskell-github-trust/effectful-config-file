@@ -132,7 +132,11 @@ readConfig'
   -> Eff es c
 readConfig' path = do
   tp <- getGlobalTracerProvider
-  let tracer = makeTracer tp (instrumentationLibrary "effectful-config-file" "0.1.0.0") tracerOptions
+  let tracer =
+        makeTracer
+          tp
+          (instrumentationLibrary "effectful-config-file" "0.1.0.0")
+          tracerOptions
   inSpan' tracer "config.read" defaultSpanArguments $ \sp -> do
     addAttribute sp "config.path" (T.pack path)
     processResult . decode' =<< liftIO (T.readFile path)

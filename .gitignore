@@ -1,3 +1,4 @@
 .tmp/
 .stack-work/
 node_modules/
+.dir-locals.el
