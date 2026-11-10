@@ -37,7 +37,8 @@ data Log :: Effect
 
 type instance DispatchOf Log = Static WithSideEffects
 
-newtype instance StaticRep Log = Log (Loc -> LogSource -> LogLevel -> LogStr -> IO ())
+newtype instance StaticRep Log
+  = Log (Loc -> LogSource -> LogLevel -> LogStr -> IO ())
 
 -- | Run the t'Log' effect with a @monad-logger@ style logging function.
 --

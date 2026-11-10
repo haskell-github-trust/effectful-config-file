@@ -21,6 +21,7 @@ import Control.Exception (IOException, tryJust)
 import Control.Monad (guard, void, (<=<))
 import Data.ByteString.Char8 (ByteString)
 import qualified Data.ByteString.Char8 as B (pack)
+import Data.Functor ((<&>))
 import Data.List (isPrefixOf)
 import Data.Text (Text)
 import qualified Data.Text as T (pack, unpack)
@@ -145,7 +146,11 @@ instance (FromValue a, Typeable a) => FromValue (ConfigValue a) where
     either
       (\e -> warnAt l (errorBundlePretty e) >> fromValue v)
       pure
-      (runParser configValueParser ("ConfigValue " <> show (typeOf @a undefined)) (T.unpack t))
+      ( runParser
+          configValueParser
+          ("ConfigValue " <> show (typeOf @a undefined))
+          (T.unpack t)
+      )
   fromValue v = Literal <$> fromValue v
 
 -- | Wraps a config value fetch in a @config.fetch@ span tagged with the
@@ -158,7 +163,11 @@ withConfigSpan
   -> Eff es a
 withConfigSpan source key act = do
   tp <- getGlobalTracerProvider
-  let tracer = makeTracer tp (instrumentationLibrary "effectful-config-file" "0.1.0.0") tracerOptions
+  let tracer =
+        makeTracer
+          tp
+          (instrumentationLibrary "effectful-config-file" "0.1.0.0")
+          tracerOptions
   inSpan' tracer "config.fetch" defaultSpanArguments $ \sp -> do
     addAttribute sp "config.source" source
     addAttribute sp "config.key" key
@@ -177,7 +186,10 @@ tryMissing sp io = do
   addAttribute sp "config.found" (either (const False) (const True) r)
   pure r
 
-rethrowMissing :: IOE :> es => Either IOException b -> Eff es b
+rethrowMissing
+  :: IOE :> es
+  => Either IOException b
+  -> Eff es b
 rethrowMissing = either (liftIO . ioError) pure
 
 instance ConfigParse a => ConfigFetch (ConfigValue a) where
@@ -193,9 +205,7 @@ instance ConfigParse a => ConfigFetch (ConfigValue a) where
       $ \sp -> do
         fp' <-
           if "~/" `isPrefixOf` fp
-            then do
-              home <- liftIO getHomeDirectory
-              pure $ home </> drop 2 fp
+            then liftIO getHomeDirectory <&> (</> drop 2 fp)
             else pure fp
 
         logDebug $ "fetching config value from file " <> T.pack fp
