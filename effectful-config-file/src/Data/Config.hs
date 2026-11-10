@@ -17,7 +17,8 @@ module Data.Config (
 ) where
 
 import Control.Applicative.Combinators (choice)
-import Control.Monad (void)
+import Control.Exception (IOException, tryJust)
+import Control.Monad (guard, void, (<=<))
 import Data.ByteString.Char8 (ByteString)
 import qualified Data.ByteString.Char8 as B (pack)
 import Data.List (isPrefixOf)
@@ -41,6 +42,7 @@ import OpenTelemetry.Trace.Core (
 import System.Directory (getHomeDirectory)
 import System.Environment (getEnv)
 import System.FilePath ((</>))
+import System.IO.Error (isDoesNotExistError)
 import Text.Megaparsec (
   Parsec,
   chunk,
@@ -162,24 +164,42 @@ withConfigSpan source key act = do
     addAttribute sp "config.key" key
     act sp
 
+-- | A missing env var or file is an expected miss (callers fall back), so it
+-- is tagged @config.found=false@ instead of failing the span, and rethrown
+-- by 'rethrowMissing' once the span has ended.
+tryMissing
+  :: IOE :> es
+  => Span
+  -> IO b
+  -> Eff es (Either IOException b)
+tryMissing sp io = do
+  r <- liftIO $ tryJust (\e -> e <$ guard (isDoesNotExistError e)) io
+  addAttribute sp "config.found" (either (const False) (const True) r)
+  pure r
+
+rethrowMissing :: IOE :> es => Either IOException b -> Eff es b
+rethrowMissing = either (liftIO . ioError) pure
+
 instance ConfigParse a => ConfigFetch (ConfigValue a) where
   fetch (Env e) =
-    withConfigSpan "env" (T.pack e) $ \_ -> do
-      logDebug $ "fetching config value from env " <> T.pack e
-      v <- liftIO (getEnv e)
-      pure $ Literal (parse (T.pack v))
+    fmap (Literal . parse . T.pack) . rethrowMissing
+      <=< withConfigSpan "env" (T.pack e)
+      $ \sp -> do
+        logDebug $ "fetching config value from env " <> T.pack e
+        tryMissing sp (getEnv e)
   fetch (File fp) =
-    withConfigSpan "file" (T.pack fp) $ \_ -> do
-      fp' <-
-        if "~/" `isPrefixOf` fp
-          then do
-            home <- liftIO getHomeDirectory
-            pure $ home </> drop 2 fp
-          else pure fp
+    fmap (Literal . parse . T.pack) . rethrowMissing
+      <=< withConfigSpan "file" (T.pack fp)
+      $ \sp -> do
+        fp' <-
+          if "~/" `isPrefixOf` fp
+            then do
+              home <- liftIO getHomeDirectory
+              pure $ home </> drop 2 fp
+            else pure fp
 
-      logDebug $ "fetching config value from file " <> T.pack fp
-      v <- liftIO (readFile fp')
-      pure $ Literal (parse (T.pack v))
+        logDebug $ "fetching config value from file " <> T.pack fp
+        tryMissing sp (readFile fp')
   fetch (Secret k) =
     withConfigSpan "secretspec" k $ \_ -> do
       logDebug $ "fetching config value from secretspec " <> k
