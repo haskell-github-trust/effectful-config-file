@@ -1,3 +1,9 @@
+## [1.2.3](https://github.com/haskell-github-trust/effectful-config-file/compare/1.2.2...1.2.3) (2026-11-11)
+
+### Bug Fixes
+
+* avoid error span on expected not found config ([7161128](https://github.com/haskell-github-trust/effectful-config-file/commit/716112893565592f9f42d749b76db18dcaa31071))
+
 ## [1.2.2](https://github.com/haskell-github-trust/effectful-config-file/compare/1.2.1...1.2.2) (2026-10-31)
 
 ## [1.2.1](https://github.com/haskell-github-trust/effectful-config-file/compare/1.2.0...1.2.1) (2026-10-31)
