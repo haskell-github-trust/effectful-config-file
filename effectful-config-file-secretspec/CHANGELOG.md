@@ -1,3 +1,9 @@
+## [1.2.4](https://github.com/haskell-github-trust/effectful-config-file/compare/1.2.3...1.2.4) (2026-11-16)
+
+### Bug Fixes
+
+* switch stackage to nightly ([489ff28](https://github.com/haskell-github-trust/effectful-config-file/commit/489ff28d4b87e31805a427ad7f26a5e0002a27e3))
+
 ## [1.2.3](https://github.com/haskell-github-trust/effectful-config-file/compare/1.2.2...1.2.3) (2026-11-11)
 
 ### Bug Fixes
